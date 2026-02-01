@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SVG Drawing Board</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        svg {
+            border: 2px solid #333;
+            background: #fff;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body>
+
+<svg id="drawingBoard" width="800" height="500"></svg>
+
+<script>
+    const svg = document.getElementById("drawingBoard");
+    let isDrawing = false;      
+    let currentLine = null;     
+    svg.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+
+        
+
+        currentLine = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+        currentLine.setAttribute("stroke", "black");
+        currentLine.setAttribute("stroke-width", "2");
+        currentLine.setAttribute("fill", "none");
+        currentLine.setAttribute("points", `${e.offsetX},${e.offsetY}`);
+        svg.appendChild(currentLine);
+    });
+
+    svg.addEventListener("mousemove", (e) => {
+        if (!isDrawing) return;
+        const points = currentLine.getAttribute("points");
+        currentLine.setAttribute("points", points + ` ${e.offsetX},${e.offsetY}`);
+    });
+
+    svg.addEventListener("mouseup", () => {
+        isDrawing = false;
+    });
+
+    svg.addEventListener("mouseleave", () => {
+        isDrawing = false; 
+    });
+</script>
+
+</body>
+</html>
